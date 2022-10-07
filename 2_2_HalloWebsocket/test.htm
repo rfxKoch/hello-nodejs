@@ -1,0 +1,42 @@
+<html>
+
+<head>
+  <title>2.2 Hallo Websocket</title>
+</head>
+
+<body>
+  <!-- ein Eingabefeld für die Nachricht und einen Button zum absenden-->
+  <input id="msgInput" type="text" value="Hallo Welt!" />
+  <input id="sendButton" type="button" value="senden" />
+</body>
+
+<script type="text/javascript">
+  /* die DOM-Elemente an JS-Variablen binden */
+  const sendButton = document.getElementById('sendButton');
+  const msgInput = document.getElementById('msgInput');
+
+  /* mit dem WebSocket-Server verbinden */
+  const ws = new WebSocket('ws://localhost:3333');
+
+  /* wenn die Verbindung offen ist */
+  ws.onopen = () => {
+    /* das onClick-Event des Button überschreiben */
+    sendButton.onclick = () => {
+      /* Inhalt des Eingabefeld an den Server senden */
+      ws.send(msgInput.value);
+    };
+  };
+
+  /* wenn der WebSocket-Server eine Nachricht sendet */
+  ws.onmessage = (event) => {
+    msgInput.value = event.data.toString();
+  };
+
+  /* wenn die Verbindung zum Server geschlossen wird */
+  ws.onclose = () => {
+    alert('Vrebindung zum WebSocket-Server verloren');
+  };
+
+</script>
+
+</html>
